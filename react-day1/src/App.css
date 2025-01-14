@@ -1,0 +1,36 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4; 
+    margin: 0; 
+}
+
+  div{
+    text-align: center;
+  }
+
+  h1{
+    color:blue;
+  }
+  
+  p {
+    color: #00b3cf;
+    font-size: 30px;
+    margin: 10px;
+  }
+
+  button {
+    background-color: #ff1e83;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    display: inline-block;
+    margin: 20px auto;
+  }
+  button:hover {
+    background-color: #1497d8; /* Steel Blue */
+  }
+
+  
