@@ -1,0 +1,77 @@
+/* Alarm.module.css */
+
+.card {
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #5a8bbc;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .cardBody {
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+  }
+  
+  .setAlarmButton {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  .setAlarmButton:hover {
+    background-color: #0056b3;
+  }
+  
+  .alarmList {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .alarmItem {
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    margin: 5px 0;
+    padding: 10px;
+  }
+  
+  .alarmItem button {
+    margin-left: 10px;
+  }
+
+
+  .cardTitle {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .input {
+    width: 80px;
+    background-color: aquamarine;
+  }
+  
+  .setAlarmButton {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .filterSelect {
+    width: 50%;
+  }
+  
+  .listItem {
+    background-color: #f9f9f9;
+  }
+  
+  .editButton {
+    background-color: #ffc107;
+  }
+  
+  .deleteButton {
+    background-color: #dc3545;
+  }
+    
