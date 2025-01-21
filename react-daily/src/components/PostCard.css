@@ -1,3 +1,5 @@
+/* Use only after disabling bootstrap in main.tsx
+or in App.css otherwise will get overwritten */
 body {
     background-color: #a4bdd3;
 }

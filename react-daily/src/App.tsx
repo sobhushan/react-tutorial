@@ -1,7 +1,8 @@
 import { getPost } from "./api-integrate/api-index";
 import { useEffect, useState } from "react";
 import PostCard from "./components/PostCard";
-import "./components/PostCard.css"
+import "./App.css"
+//import "./components/PostCard.css"
 
 export interface Post {
   userId: number;

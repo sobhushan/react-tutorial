@@ -2,7 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Signup from './components/Signup';  
 import Login from './components/Login'; 
-import ATMProcess from './components/ATMProcess';
+import ATMProcess from "./components/axiosTest"
+//import ATMProcess from './components/ATMProcess';
 import History from './components/History';   
 import Home from './components/Home';      
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-//import { handleWithdraw, handleDeposit } from "../handlers";
+import axios from "axios";
 
 const ATMProcess: React.FC = () => {
     const [username, setUsername] = useState<string | null>("Loading...");
@@ -31,22 +31,19 @@ const ATMProcess: React.FC = () => {
         }
 
         try {
-            const response = await fetch("http://localhost:8000/balance", {
-                method: "POST",
-                headers: { "Content-Type": "application/json",
-                    'Authorization': `Bearer ${token}`
-                 },
-                body: JSON.stringify({ username }),
-            });
-            const data = await response.json();
-            if (response.ok) {
-                setBalance(data.balance);
-            } else {
-                alert(data);
-                setBalance(null);
-            }
-        } catch (error) {
-            console.error("Error fetching balance:", error);
+            const response = await axios.post("http://localhost:8000/balance", 
+                { username },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+            setBalance(response.data.balance);
+        } catch (error: any) {
+            console.error("Error fetching balance:", error.message);
+            alert(error.response?.data || "Failed to fetch balance.");
             setBalance(null);
         }
     };
@@ -66,23 +63,21 @@ const ATMProcess: React.FC = () => {
         }
 
         try {
-            const response = await fetch("http://localhost:8000/withdraw", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" ,
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ username, amount }),
-            });
-            const data = await response.text();
-            if (response.ok) {
-                fetchBalance(username!); // Refresh balance
-                setResultMessage(data);
-                resetTransaction();
-            } else {
-                alert(data);        
-            }
-        } catch (error) {
-            console.error("Error processing withdrawal:", error);
+            const response = await axios.post("http://localhost:8000/withdraw", 
+                { username, amount },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+            setResultMessage(response.data);
+            fetchBalance(username!); // Refresh balance
+            resetTransaction();
+        } catch (error: any) {
+            console.error("Error processing withdrawal:", error.message);
+            alert(error.response?.data || "Withdrawal failed.");
         }
     };
 
@@ -101,23 +96,21 @@ const ATMProcess: React.FC = () => {
         }
 
         try {
-            const response = await fetch("http://localhost:8000/deposit", {
-                method: "POST",
-                headers: { "Content-Type": "application/json",
-                    'Authorization': `Bearer ${token}`
-                 },
-                body: JSON.stringify({ username, amount }),
-            });
-            const data = await response.text();
-            if (response.ok) {
-                fetchBalance(username!); // Refresh balance
-                setResultMessage(data);
-                resetTransaction();
-            } else {
-                alert(data);
-            }
-        } catch (error) {
-            console.error("Error processing deposit:", error);
+            const response = await axios.post("http://localhost:8000/deposit", 
+                { username, amount },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+            setResultMessage(response.data);
+            fetchBalance(username!); // Refresh balance
+            resetTransaction();
+        } catch (error: any) {
+            console.error("Error processing deposit:", error.message);
+            alert(error.response?.data || "Deposit failed.");
         }
     };
 
