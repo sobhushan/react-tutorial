@@ -1,40 +1,42 @@
+"use client";
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 
-const Login = () => {
+const Signup = () => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const navigate = useNavigate();
- 
+  const [initialAmount, setInitialAmount] = useState<number>(0);
+  const router = useRouter();
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const loginData = {
+    const signupData = {
       username,
       password,
+      initial_amt: initialAmount,
     };
 
     try {
-      // const response = await fetch('http://localhost:8000/login', {
-      const response = await fetch('http://localhost:3000/api/login', {
+      const response = await fetch('/api/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(loginData),
+        body: JSON.stringify(signupData),
       });
 
-      const data = await response.text();
-      alert(data); // Show success or failure message
+      const data = await response.json();
 
-      if (data.includes('Login successful')) {
-        localStorage.setItem('username', username);
-        navigate("/atm")
-        //window.location.href = "/atm"; // Redirect to action page on success
+      if (response.ok) {
+        alert(data.message); // Success message
+        router.push('/login'); // Redirect to login page
+      } else {
+        alert(data.error || 'Signup failed');
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('There was an error with the login process.');
+      alert('There was an error with the signup process.');
     }
   };
 
@@ -42,8 +44,9 @@ const Login = () => {
     <div className="container mt-5">
       <div className="card mx-auto" style={{ maxWidth: '400px' }}>
         <div className="card-body">
-          <h2 className="text-center">Welcome to ATM</h2>
+          <h2 className="text-center">Signup Here</h2>
           <form onSubmit={handleSubmit}>
+            {/* Username Input */}
             <div className="mb-3">
               <label htmlFor="username" className="form-label">
                 Username
@@ -52,37 +55,55 @@ const Login = () => {
                 type="text"
                 className="form-control"
                 id="username"
-                name="username"
                 placeholder="Enter your username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
               />
             </div>
-            <div className="mb-3 position-relative">
+
+            {/* Password Input */}
+            <div className="mb-3">
               <label htmlFor="password" className="form-label">
                 Password
               </label>
               <input
-                type={'password'}
+                type="password"
                 className="form-control"
                 id="password"
-                name="password"
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
+
+            {/* Initial Amount Input */}
+            <div className="mb-3">
+              <label htmlFor="initial-amount" className="form-label">
+                Initial Amount
+              </label>
+              <input
+                type="number"
+                className="form-control"
+                id="initial_amount"
+                placeholder="Enter initial deposit amount"
+                value={initialAmount}
+                onChange={(e) => setInitialAmount(Number(e.target.value))}
+                required
+              />
+            </div>
+
             <div className="d-grid">
-              <button type="submit" className="btn btn-primary">
-                Login
+              <button type="submit" className="btn btn-success">
+                Signup
               </button>
             </div>
           </form>
+
           <div className="text-center mt-3">
-            <a href="/signup" className="text-decoration-none">
-              Not a User? Signup
+            <a href="/login" className="text-decoration-none">
+              Already a user? Login
             </a>
           </div>
         </div>
@@ -91,4 +112,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;

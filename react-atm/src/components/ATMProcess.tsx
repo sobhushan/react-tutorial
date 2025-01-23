@@ -24,17 +24,17 @@ const ATMProcess: React.FC = () => {
 
     // Fetch balance from server
     const fetchBalance = async (username: string) => {
-        const token = localStorage.getItem('token'); // Get token from localStorage
-        if (!token) {
-          console.error("Token is missing");
-          return;
-        }
+        // const token = localStorage.getItem('token'); // Get token from localStorage
+        // if (!token) {
+        //   console.error("Token is missing");
+        //   return;
+        // }
 
         try {
-            const response = await fetch("http://localhost:8000/balance", {
+            const response = await fetch("http://localhost:3000/api/balance", {
                 method: "POST",
                 headers: { "Content-Type": "application/json",
-                    'Authorization': `Bearer ${token}`
+                    // 'Authorization': `Bearer ${token}`
                  },
                 body: JSON.stringify({ username }),
             });
@@ -53,11 +53,11 @@ const ATMProcess: React.FC = () => {
 
     // Handle withdrawal
     const processWithdraw = async () => {
-        const token = localStorage.getItem('token'); // Get token from localStorage
-        if (!token) {
-          console.error("Token is missing");
-          return;
-        }
+        // const token = localStorage.getItem('token'); // Get token from localStorage
+        // if (!token) {
+        //   console.error("Token is missing");
+        //   return;
+        // }
 
         const amount = parseFloat(withdrawAmount.toString());
         if (amount <= 0 || amount == null) {
@@ -66,10 +66,11 @@ const ATMProcess: React.FC = () => {
         }
 
         try {
-            const response = await fetch("http://localhost:8000/withdraw", {
+            // const response = await fetch("http://localhost:8000/withdraw", {
+                const response = await fetch("http://localhost:3000/api/withdraw", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" ,
-                    'Authorization': `Bearer ${token}`
+                    // 'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({ username, amount }),
             });
@@ -88,11 +89,11 @@ const ATMProcess: React.FC = () => {
 
     // Handle deposit
     const processDeposit = async () => {
-        const token = localStorage.getItem('token'); // Get token from localStorage
-        if (!token) {
-          console.error("Token is missing");
-          return;
-        }
+        // const token = localStorage.getItem('token'); // Get token from localStorage
+        // if (!token) {
+        //   console.error("Token is missing");
+        //   return;
+        // }
 
         const amount = parseFloat(depositAmount.toString());
         if (amount <= 0 || amount == null) {
@@ -101,10 +102,11 @@ const ATMProcess: React.FC = () => {
         }
 
         try {
-            const response = await fetch("http://localhost:8000/deposit", {
+            // const response = await fetch("http://localhost:8000/deposit", {
+                const response = await fetch("http://localhost:3000/api/withdraw", {
                 method: "POST",
                 headers: { "Content-Type": "application/json",
-                    'Authorization': `Bearer ${token}`
+                    // 'Authorization': `Bearer ${token}`
                  },
                 body: JSON.stringify({ username, amount }),
             });
