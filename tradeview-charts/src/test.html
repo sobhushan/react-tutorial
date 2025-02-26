@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradingView Lightweight Chart - CSV Upload</title>
+    <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@3.8.0/dist/lightweight-charts.standalone.production.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #chart-container { width: 90%; height: 500px; margin: auto; }
+        input { margin: 10px; padding: 5px; }
+    </style>
+</head>
+<body>
+
+    <h1>TradingView Lightweight Chart</h1>
+    <input type="file" id="csvFileInput" accept=".csv">
+    <div id="chart-container"></div>
+
+    <script>
+        window.onload = function () {
+            const chartContainer = document.getElementById("chart-container");
+            chartContainer.style.width = "100%";
+            chartContainer.style.height = "500px";
+
+            const chart = LightweightCharts.createChart(chartContainer, {
+                width: chartContainer.clientWidth || 800,
+                height: 500,
+                layout: { background: { type: 'solid', color: 'white' }, textColor: 'black' },
+                grid: { vertLines: { color: "#e1e1e1" }, horzLines: { color: "#e1e1e1" } }
+            });
+
+            const candlestickSeries = chart.addCandlestickSeries({
+                upColor: '#26a69a',
+                downColor: '#ef5350',
+                borderVisible: false,
+                wickUpColor: '#26a69a',
+                wickDownColor: '#ef5350',
+            });
+
+            // Handle CSV File Upload
+            document.getElementById('csvFileInput').addEventListener('change', function (event) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const csv = e.target.result;
+                    const data = parseCSV(csv);
+                    if (data.length > 0) {
+                        candlestickSeries.setData(data);
+                        chart.timeScale().fitContent();
+                    } else {
+                        alert("Invalid CSV format! Ensure it has 'Date', 'Open', 'High', 'Low', 'Close'.");
+                    }
+                };
+                reader.readAsText(file);
+            });
+
+            // Function to Parse CSV with "Date" Instead of "Time"
+            function parseCSV(csvText) {
+                const rows = csvText.split("\n");
+                if (rows.length < 2) return [];
+
+                // Extract column headers and map their indexes
+                const headers = rows[0].split(",").map(h => h.trim());
+                const dateIndex = headers.indexOf("Date");
+                const openIndex = headers.indexOf("Open");
+                const highIndex = headers.indexOf("High");
+                const lowIndex = headers.indexOf("Low");
+                const closeIndex = headers.indexOf("Close");
+
+                if (dateIndex === -1 || openIndex === -1 || highIndex === -1 || lowIndex === -1 || closeIndex === -1) {
+                    return [];
+                }
+
+                const data = [];
+                for (let i = 1; i < rows.length; i++) {
+                    const row = rows[i].split(",");
+                    if (row.length < 5) continue; // Skip empty or incomplete rows
+
+                    data.push({
+                        time: row[dateIndex].trim(),  // Now correctly uses "Date"
+                        open: parseFloat(row[openIndex].trim()),
+                        high: parseFloat(row[highIndex].trim()),
+                        low: parseFloat(row[lowIndex].trim()),
+                        close: parseFloat(row[closeIndex].trim()),
+                    });
+                }
+
+                return data;
+            }
+        };
+    </script>
+
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+</body>
+</html>

@@ -1,35 +1,46 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// // src/App.tsx
+// import React, { useState } from "react";
+// import Chart from "./components/Chart";
+// import FileUpload from "./components/FileUpload";
+// import 'bootstrap/dist/css/bootstrap.min.css';
+// // import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+// const App: React.FC = () => {
+//   const [chartData, setChartData] = useState<any[]>([]);
+
+//   return (
+//     <div className="d-flex flex-column align-items-center justify-content-center vh-100 bg-light">
+//       <h1 className="text-center fw-bold mb-4 mt-5">TradingView Lightweight Chart</h1>
+//       <FileUpload onFileLoaded={setChartData} />
+//       <div className="w-11/12 h-[500px] bg-white shadow-lg rounded-lg">
+//         <Chart data={chartData} />
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default App;
+
+
+//================================================
+
+import React, { useState } from "react";
+import Chart from "./components/Chart";
+import FileUpload from "./components/FileUpload";
+import "bootstrap/dist/css/bootstrap.min.css";
+
+const App: React.FC = () => {
+  const [chartData, setChartData] = useState<any[]>([]);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="container-fluid d-flex flex-column align-items-center justify-content-center vh-100" style={{ backgroundColor: "rgba(35, 160, 152)" }}>
+      <h1 className="text-center fw-bold mb-3 mt-2">TradingView Lightweight Chart</h1>
+      <FileUpload onFileLoaded={setChartData} />
+      <div className="w-100 mb-1" style={{ height: "550px" }}>
+        <Chart data={chartData} />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    </div>
+  );
+};
 
-export default App
+export default App;
